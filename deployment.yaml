@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-todo-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-todo-app
+  template:
+    metadata:
+      labels:
+        app: node-todo-app
+    spec:
+      containers:
+        - name: node-todo-app
+          image: shaikkhaleedaazhari/node-todo-app:latest
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-todo-app-service
+spec:
+  type: NodePort
+  selector:
+    app: node-todo-app
+  ports:
+    - port: 80
+      targetPort: 8000
+      nodePort: 30036  # Must be between 30000–32767
